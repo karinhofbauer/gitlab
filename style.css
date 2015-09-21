@@ -1,0 +1,62 @@
+body 
+{
+  font-family: verdana, sans-serif;
+  font-size: 13px;
+  width: 900px;
+}
+
+.branches
+{
+	font-family:courier,serif;
+	padding: 5px 5px 15px 30px;
+	color:#0000FF;
+	margin-top:10px;
+}
+
+table
+{
+	border: 1px;
+	border-style: solid;
+}
+
+td, th
+{
+	border: 1px;
+	border-style: solid;
+}
+
+li
+{
+	margin-bottom: 10px;
+}
+
+.local
+{
+	color:#CC0000;	
+}
+
+.source 
+{
+	background: #eeeeee;
+	border-width: 1px;
+	border-style: solid;
+	padding: 10 5 10 5;
+	font-family: "Courier new",courier,monospace;
+	font-size: 11px;
+}
+
+.inline_source
+{
+	font-family: courier,serif;
+	padding-left:15px;
+}
+
+.branch
+{
+	color: #0000FF;
+}
+
+h3
+{
+	margin-top: 30px;
+}

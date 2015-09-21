@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <title>Git - remote</title>
+        <link rel="stylesheet" href="../style.css" type="text/css">
+    </head>
+    
+    <body>
+        <h2>Git - remote</h2>
+        
+        <h3>Cloning a remote repository</h3>
+       
+        <p>
+            Now lets introduce the concept of remote repositories. Start by creating a new directory, separate from our ”gitlab” directory. Name if ”mygitlab”. Enter the new directory.
+        </p>
+        <p>
+            Clone the "gitlab" repository. It's on your machine, but could just as well be on a remote machine over ssh, https or the git:// protocol.
+        </p>         
+        <div class="source">
+            $ git clone &lt;path_to_gitlab&gt;
+        </div>
+        <p>
+            You now have a clone of the complete gitlab repo, connected to it through the ”origin” alias (see .git/config).
+        </p>
+        <div class="branches"><font class="local">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; master**<br/>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br/></font>
+        (1)-(2)-(3)-(4)-(7)-(5)-(6)-(8)-(9)-(11)-(12)-(14)-(15*) -- remotes/origin/master<br/>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br/>
+                                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (10)-----(13*) -- remotes/origin/mergebranch  
+        </div>
+        <p>
+            Bring up gitk to notice that there are remote branches, and only one master branch. By default remote branches aren't mapped to local branches. Lets create a commit and get it back to ”origin” (i.e. ”gitlab”) somehow 
+        </p>
+        <div class="source">
+            $ echo Done in mygitlab >> thirdfile
+            $ git commit -a -m ”Commit in mygitlab”
+        </div>
+        <p>
+            Reload gitk to see that this commit only is in our local repo (i.e. the ”remotes...” branches are unchanged).
+        </p>
+        <div class="branches">
+        <font class="local">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (16*) -- master**<br/>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br/></font>
+        (1)-(2)-(3)-(4)-(7)-(5)-(6)-(8)-(9)-(11)-(12)-(14)-(15*) -- remotes/origin/master<br/>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br/>
+                                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (10)-----(13*) -- remotes/origin/mergebranch  
+        </div>
+        <p>
+            We could push it to “origin” through “git push”, but “origin” in this case is not “bare”. (Lengthy explanation of “bare” follows here.) 
+        </p>
+        <p>
+            We'll instead pull it, so return to the ”gitlab” repository.Back on the ”gitlab” repository. We'll first fetch the new commits from the ”mygitlab” repository.
+        </p>
+        <div class="source">
+            $ git fetch &lt;path_to_mygitlab&gt;
+        </div>
+        <p>
+            The new commits are temporarily stored in FETCH_HEAD. We now need to merge these onto our own tree.
+        </p>
+        <div class="source">
+            $ git merge FETCH_HEAD
+        </div>
+        <div class="branches">
+        (1)-(2)-(3)-(4)-(7)-(5)-(6)-(8)-(9)-(11)-(12)-(14)-(15)-(16*) -- master**<br/>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br/>
+                                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (10)-----(13*) -- mergebranch  
+        </div>
+        <p>
+        <p>
+            We've now merged the remote commit from mygitlab into the master branch of gitlab. A shortcut command is ”git pull &lt;path_to_remote&gt;” which will perform the above two commans in one swoop.
+        </p>
+        <p>
+            We've now successfully pulled a commit from a remote repository into our own.
+        </p>
+        <p>
+            When you work with a common bare repository to which everyone commits, you usually can do ”git push” to it, very much like subversion. We'll not delve into that now, but instead look at integration with subversion.
+        </p>
+        <p>
+            Create a new, empty directory named ”svngitlab” and enter it.<br/>
+            Initialize it to track our svn repo.
+        </p>
+        <div class="source">
+            $ git svn clone &lt;path_to_our_svn_repository&gt;
+        </div>
+        <p>
+            Note that if you've put the repo locally you will need to use this format “file://&lt;absolute_path_to_repo&gt;”, for example “file:///home/foo/svnrepo”.
+        </p>
+        <p>
+            Our local git repo is now connected to the subversion repo through the “git-svn” remote. It's extremly important that the master branch is in sequence, since subversion requires that.<br/>            
+        </p>
+        <p>
+            Create a new branch for some work.
+        </p>
+        <div class="source">
+            $ git checkout -b localwork<br/>
+            $ echo A local file > localfile<br/>
+            $ git add localfile &amp;&amp; git commit -a -m “A file”
+        </div>
+        <p>
+            Committing our change to svn requires that our master is synced first.
+        </p>
+        <div class="source">
+            $ git checkout master<br/>
+            $ git svn rebase
+        </div>
+        <p>
+            If there were any updates, we must first rebase our branch on master.
+        </p>
+        <div class="source">
+            $ git rebase master localwork
+        </div>
+        <p>
+            Then move to master and pull.
+        </p>
+        <div class="source">
+            $ git checkout master<br/>
+            $ git pull . localwork            
+        </div>
+        <p>
+            Now push!
+        </p>
+        <div class="source">
+            $ git svn dcommit
+        </div>
+        <p>
+            Use topic branches for each feature, but remember to make sure that master is in sequence since subversion demands that. 
+        </p>
+    </body>
+</html>

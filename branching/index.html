@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <title>Git - branching</title>
+        <link rel="stylesheet" href="../style.css" type="text/css">
+    </head>
+    
+    <body>
+        <h2>Git - branching</h2>
+        
+        <h3>Setting up Git</h3>
+        <p>
+            Now we have managed to create a nice repository with the amount of almost uncountable two files. But what is a repository without branches? Boring, right.<br/>
+            So let us create a branch with:
+        </p>
+        <div class="source">
+            $ git branch newbranch
+        </div>
+        <p>
+            Did it really happen? Is there a new branch? And is it called newbranch (Killername!).<br/>
+            Verify with:
+        </p>
+        <div class="source">
+            git branch
+        </div>
+        <p class="wrap_branches">
+            This command lists all the branches in the repository, marking the current one, which is the one you are working against, with an asterix. In our case this would be the branch called <i>master</i>
+        </p>
+        <div class="branches">(1)-(2)-(3)-(4*) -- master<br/>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
+                                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; newbranch  
+        </div>      
+        <p>
+            Now switch to the newbranch and look at the branch list.
+        </p>
+        <div class="source">
+            $ git checkout newbranch<br/>
+            $ git branch
+        </div>
+        <p>
+            In the list we get from the <i>branch</i> command the asterix should have been switched from master to newbranch, indicating that newbranch is the one we are currently working with.
+        </p>
+        <p>
+            Remember the thirdfile that we deleted? Maybe that was not such a good idea. Let's just create it again.
+        </p>
+        <div class="source">
+            $ echo This is a topicbranch > thirdfile<br/>
+            $ git add thirdfile<br/>
+            $ git commit -m &quot;Added third file.&quot;            
+        </div>
+        <div class="branches">(1)-(2)-(3)-(4*) -- master<br/>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
+                                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (5*) -- newbranch  
+        </div>
+        <p>
+            Now we alter the firstfile and commit it again. Are you tired of all the <i>git add</i> commands we have to write to add our files to the commit?<br/>
+Here comes a small option, that helps us in the current case:            
+        </p>
+        <div class="source">
+            $ echo Even more text >> firstfile<br/>
+            $ git commit -a -m ”More text”
+        </div>
+        <p>
+            The option <i>- a</i> on the <i>commit</i> command takes all modified and deleted files and commits them without us adding them first. Note that is does not include new files, those remain unstaged until manually added.
+        </p>
+        <div class="branches">(1)-(2)-(3)-(4*) -- master<br/>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
+                                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (5)-(6*) -- newbranch  
+        </div>
+        <p>
+            Add another file but do not yet track it.    
+        </p>
+        <div class="source">
+            $ echo Is not tracked > untracked_file
+        </div>
+        <p>
+            Check the status of the file. Is it untracked? Good. Now switch branches from newbranch to master, and look at the result.
+        </p>
+        <p>
+        Has the thirdfile dissappeared? Yes? Perfect. After all we added it to another branch. Has the firstfile still the old content? Or is there "More text". It isn't? Excellent. But the untracked file ist still there. We didn't add it anywhere, we didn't commit anything, so this is how it should be. Life is wonderful.
+        </p>
+        <p>
+        Switch between the branches to see how they differ.
+        </p>
+        <p>
+        Bring up the gitk tool to visualize the repository.
+        </p>
+        <div class="source">
+            $ gitk
+        </div>        
+        <p>
+            Remove the untracked file from the repository.
+        </p>
+        <div class="source">
+            $ git clean  -f
+        </div>
+        <p>
+            Git clean is your friend. When you finally, after adding and removing and moving and updating files came to the point of having this giant list of untracked files, get git clean for the rescue. 
+            This command runs recursively through the repository (starting from your current point) removing files that are untracked, ignored and/or other depending on the options you provided.
+        </p>
+        
+    </body>
+</html>

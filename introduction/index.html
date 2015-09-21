@@ -1,0 +1,158 @@
+<html>
+    <head>
+        <title>Git - basics</title>
+        <link rel="stylesheet" href="../style.css" type="text/css">
+    </head>
+    
+    <body>
+        <h2>Git - basics</h2>
+        
+        <h3>Setting up Git</h3>
+        <p>
+            Git sends your name and email with every commit. If you haven't specified them anywhere it will fallback to your system user name and fully qualified hostname which, depending on your computer configuration, might just look something like:
+        </p>
+        <div class="inline_source">Author: unknown &lt;waygroup@.&lt;none&gt;&gt;</div>
+        <p>
+            Not too pretty, is it? Much better would be something like this:
+        </p>
+        <div class="inline_source">Author: WayGroup &lt;we@waygroup.com&gt;</div>
+        <p>
+            And easy enough to do it is too:
+        </p>
+        <div class="source">
+            $ git config --global user.email we@waygroup.com<br/>
+            $ git config --global user.name "WayGroup"
+        </div>
+        <p>
+            The option <i>--global</i> stores the created properties in $HOME/.gitconfig.
+        </p>
+        
+        <h3>Creating our first repository</h3>
+        <p>
+            Create a new empty directory <i>gitlab</i>.
+            Enter <i>gitlab</i> and create a repository there using:
+        </p>
+        <div class="source">    
+            $ git init
+        </div>
+        <p>
+            Check that a directory <i>.git</i> was created.<br/>
+            Under <i>.git/config</i> you can find the config file for the current repository.
+        </p>
+        
+        <h3>Adding files to the repository</h3>
+        <p>
+            Create a new file with only a line of text as the content.
+        </p>
+        <div class="source">
+            $ echo &quot;The first line.&quot; > firstfile
+        </div>
+        <p>
+            Check git status of your file in the repository with
+        </p>
+        <div class="source">    
+            $ git status
+        </div>
+        <p>
+            Git tells us friendly that it doesn't have anything to commit, but that if found an untracked file that you might wish to add. It even tells us which command to use.<br/>
+            Prepare the file for addition in the next commit with
+        </p>
+        <div class="source">
+            $ git add firstfile
+        </div>
+        <p>
+            and commit the change with
+        </p>
+        <div class="source">
+            $ git commit
+        </div>
+        <p>
+            ... and don't panic! You are in vi! <br/>
+            Git opened a editor for us where it shows us the contents of the commit, again and tells us, friendly again, that we are supposed to enter a commit message, otherwise it will abort the commit.
+            In the documentation it says something about "your favorite editor", frankly, I think vi is ok, after years of encounter i don't start sweating anymore hitting random keys, but favourite...?<br/>
+            However, Enter a comment, ”Adding our first file.” and save. This finalizes the commit.<br/>
+            Verify by looking at the status that i don't lie.                
+        </p>
+        <div class="branches">(1*) -- master**</div>
+        <p>
+            Repeat with a second file and a third file.
+        </p>
+        <div class="source">
+            $ echo &quot;Our first line in the second file.&quot; > secondfile<br/>
+            $ echo &quot;Our first line in the third file.&quot; > thirdfile<br/>
+            $ git status<br/>
+            $ git add .<br/>          
+            $ git status<br/>            
+            $ git commit //Enter a comment, &quot;Adding our second and third file.&quot;<br/>
+            $ git status
+        </div>
+        <div class="branches">(1)-(2*) -- master**</div>
+        <h3>Removing files in the repository</h3>
+        <p>
+            Three files are too much? Right, we probably only need two. So let's just remove the third file again.
+            Remove the third file with:
+        </p>
+        <div class="source">
+            $ rm thirdfile
+        </div>
+        <p>
+            Check the status with:
+        </p>
+        <div class="source">
+            $ git status
+        </div>
+        <p>
+            Like it happened when we created a file, the deletion is detected but not staged.<br>
+            Tell git that you want to remove the file from the repository and commit your changes.
+        </p>
+        <div class = "source">
+            $ git rm thirdfile<br/>
+            $ git status<br/>
+            $ git commit //Enter a comment, "Removed the third file."
+        </div>
+        <div class="branches">(1)-(2)-(3*) -- master**</div>
+        <h3>Moving files in the repository</h3>
+        <p>
+            Move the second file with
+        </p>
+        <div class="source">
+            $ mv secondfile newfile
+        </div>
+        <p>
+            Check git status
+        </p>
+        <div class="source">
+            $ git status
+        </div>
+        <p>
+            Guess what? The movement was not staged. As always we do as git says.<br>
+            Add the new name of the file to the next commit, remove the old name and commit your changes. If you are tired of vi by now add your messages via the -m option of <i>git commit</i>.
+        </p>
+        <div class = "source">
+            $ git add newfile<br/>
+            $ git rm secondfile<br/>
+            $ git status<br/>
+            $ git commit -m "Renamed the second file."
+        </div>
+        <div class="branches">(1)-(2)-(3)-(4*) -- master**</div>
+        
+        <h3>Reverting an unwanted change</h3>
+        <p>
+            Add some text to the newfile and check the status.
+        </p>
+        <div class="source">
+            $ echo "A new line" >> newfile<br/>
+            $ git status
+        </div>
+        <p>
+            Git tells you that your file is modified and, as usual explains how you could add it to your commit. But this time we ignore it! Instead we want to have our changes reverted. The new text just doesn't really fit...<br/>
+            This we do with:
+        </p>
+        <div class = "source">
+            $ git checkout newfile
+        </div>
+        <p>
+            And everything is back to normal. Note, that checkout only works before a commit. Once you have committed all chances are gone. Or are they?
+        </p>
+    </body>
+</html>
