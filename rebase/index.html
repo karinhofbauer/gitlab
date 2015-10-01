@@ -10,13 +10,10 @@
         <h3>Rebase a branch with the master</h3>
        
         <p>
-            Switch to the master branch, add a new file and commit it.
+            Switch to the master branch, add two new html files (thirdfile.html and fourthfile.html) to it. I am running out of colors now, so just choose whichever you want for your div.<br/><br/>
+
+            Add and commit.
         </p>
-        <div class="source">
-            $ echo Our fourth file > fourthfile <br/>
-            $ git add fourthfile <br/>
-            $ git commit -m ”Added fourth file.”
-        </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7*) -- master**<br/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (5)-(6*) -- newbranch  
@@ -42,7 +39,6 @@
             The newbranch can now safely be pushed on to the master, since they share the same root.
         </p>
         <div class="source">
-            $ git checkout master
             $ git push . newbranch:master
         </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6*) -- master<br/>
@@ -50,7 +46,7 @@
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; newbranch**  
         </div>
         <p>
-            Once a topic branch has been merged into master, it can be discarded. Switch to the master. Delete the newbranch.
+            Once a branch has been merged into master, it can be discarded. Switch to the master. Delete the newbranch.
         </p>
         <div class="source">
             $ git branch -d newbranch
@@ -59,7 +55,7 @@
             Verify that there is only one branch left, the master.
 
         <p>
-            Since branching in git is so easy it is a good way to go to use many topic branches, one for each feature
+            Since branching in git is so easy it is a good way to go to use many branches, one for each feature
 you're working on.
 
         </p>
@@ -67,23 +63,16 @@ you're working on.
         </div>
         <h3>Handling conflicts</h3>
         <p>
-            Now create a new branch, named otherbranch. Stay on the master, add a line to the firstfile and commit.
+            Now create a new branch, named otherbranch. Stay on master, add a link to the thirdpage.html directly below the link to secondpage.html. Add and commit.
         </p>
-        <div class="source">
-            $ echo This is in master. >> firstfile<br/>
-            $ git commit -a -m “Added master line”
-        </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6)-(8*) -- master**<br/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; otherbranch  
         </div>
         <p>
-            Switch to the otherbranch and add a line to the firstfile there aswell.
+
+            Switch to the otherbranch and add at the same place a link to fourthpage.html. And, of course, add and commit.
         </p>
-        <div class="source">
-            $ echo This is in otherbranch. >> firstfile <br/>
-            $ git commit -a -m “Added otherbranch line”
-        </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6)-(8*) -- master<br/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (9*) --otherbranch** 
@@ -104,7 +93,7 @@ you're working on.
             Lets solve this manually. Bring up firstfile in your favourite text editor. Note the merge markers. We want to keep both lines, so remove the merge markers and keep the lines. Now add the file back to the commit and continue with the rebase.
         </p>
         <div class="source">
-            $ git add firstfile <br/>
+            $ git add firstpage.html <br/>
             $ git rebase --continue
         </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6)-(8*) -- master<br/>
@@ -139,24 +128,15 @@ you're working on.
             $ git checkout -b mergebranch<br/>
         </div>
         <p>
-            Add a fifthfile to mergebranch and commit.
+            Add fifthfile.html to mergebranch and commit.
         </p>
-        <div class="source">
-            $ echo &prime;A line to merge.&prime; > fifthfile<br/>
-            $ git add fifthfile &amp;&amp; git commit -a 
-        </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6)-(8)-(9*) -- master<br/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (10*) --mergebranch**  
         </div>
         <p>
-            Do some changes to master and commit.
+            Checkout master and change something in your mass of hmtl files. Commit your changes.
         </p>
-        <div class="source">
-            $ git checkout master<br/>
-            $ echo "If this file gets bigger than one MB it will destroy itself and take your computer with it!" >> firstfile<br/>
-            $ git commit -a -m ”The usual nonsense.”
-        </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6)-(8)-(9)-(11*) -- master**<br/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br/>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (10*) --mergebranch  
@@ -182,27 +162,17 @@ you're working on.
             Note that the merging resulted in its own commit.
         </p>
         <p>
-            Switch to mergebranch add a line to the firstfile and commit.
+            Switch to mergebranch add a header to to the firstpage.html and commit.
         </p>
-        <div class="source">
-            $ git checkout mergebranch<br/>
-            $ echo Conflict ahoy! >> firstfile <br/>
-            $ git commit -a -m ”Future conflict.”
-        </div>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6)-(8)-(9)-(11)-(12*) -- master<br/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/<br/>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (10)-(13*) --mergebranch**
         </div>
         <p>
-            Quick back to master and add a line again to the firstfile. We really do want a conflict!
+            Quick back to master and add a different header at the same line again to firstfile.html. We really do want a conflict!
         </p>
-        <div class="source">
-            $ git checkout master<br/>
-            $ echo Conflict indeed! >> firstfile<br/>
-            $ git commit -a -m ”This will conflict.”
-        </div>
         <p>
-            Use gitk to inspect. Use either ”gitk --all” to bring up a new instance, or just press ”ctrl+f5” on an existing.
+            Use gitk to inspect. Use either ”gitk --all” to bring up a new instance.
         </p>
         <div class="branches">(1)-(2)-(3)-(4)-(7)-(5)-(6)-(8)-(9)-(11)-(12)-(14*) -- master**<br/>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/<br/>
@@ -225,10 +195,12 @@ you're working on.
             Looking at the branchlist we see that we are still on the master branch. Since we are merging we are resolving the conflict throught a new merge commit.
         </p>
         <p>
-            Merge the firstfile manually as done previously or use git mergetool. This will bring up a merging tool, depending on what you have installed, and are able to specify via the --tools option. (kdiff is recommended on Linux, I use tortoisemerge on Windows)
+            Merge the firstfile manually as done previously or use git mergetool. Depending on your operating system there are different merge tools available or you specify a custom one.<br/><br/>
+
+            You can run the mergetool like this:
         </p>
         <div class="source">
-            $ git mergetool --tool tortoisemerge<br/>
+            $ git mergetool<br/>
         </div>
         <p>
             Once resolved, commit the merge. This time git suggests a commit message itself.
@@ -238,7 +210,7 @@ you're working on.
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (10)-----(13*) --mergebranch  
         </div>
         <p>
-            Other then rebase, merge allows you to keep the order of commits, but you do get an additional commit for each merge.
+            Other than rebase, merge allows you to keep the order of commits, but you do get an additional commit for each merge.
         </p>
     </body>
 </html>

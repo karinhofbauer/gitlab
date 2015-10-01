@@ -37,15 +37,36 @@
         </div>
         <p>
             Check that a directory <i>.git</i> was created.<br/>
-            Under <i>.git/config</i> you can find the config file for the current repository.
+            Under <i>.git/config</i> you can find the config file for the current repository.<br /><br/>
+
+            Initialize the repository by typing
         </p>
         
+        <div class="source">    
+            $ git add .
+        </div>
+
+        <p>
+            Git will treat this as your innitial commit.
+        </p>
+
         <h3>Adding files to the repository</h3>
         <p>
-            Create a new file with only a line of text as the content.
+            Let us pretend we are creating a small web app. Create a html file in the directory of your repository with some content visible if you open the page in a browser and name the file <i>firstpage.html</i><br/><br/>
+
+            The code might look something like this:
         </p>
         <div class="source">
-            $ echo &quot;The first line.&quot; > firstfile
+<pre>
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;Beautiful App&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;div style="width:20%;height:20%;margin:auto;background-color:red"&gt;&lt;/div&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
+</pre>
         </div>
         <p>
             Check git status of your file in the repository with
@@ -58,42 +79,77 @@
             Prepare the file for addition in the next commit with
         </p>
         <div class="source">
-            $ git add firstfile
+            $ git add firstpage.html
         </div>
         <p>
-            and commit the change with
+            and check the status again. Now our file shows unter gits "to be commited" list, currently as the only entry there. 
+            Commit the change with
         </p>
         <div class="source">
             $ git commit
         </div>
         <p>
             ... and don't panic! You are in vi! <br/>
-            Git opened a editor for us where it shows us the contents of the commit, again and tells us, friendly again, that we are supposed to enter a commit message, otherwise it will abort the commit.
+            Git opened an editor for us where it shows us the contents of the commit, again and tells us, that we are supposed to enter a commit message, otherwise it will abort the commit.
             In the documentation it says something about "your favorite editor", frankly, I think vi is ok, after years of encounter i don't start sweating anymore hitting random keys, but favourite...?<br/>
             However, Enter a comment, ”Adding our first file.” and save. This finalizes the commit.<br/>
             Verify by looking at the status that i don't lie.                
         </p>
         <div class="branches">(1*) -- master**</div>
         <p>
-            Repeat with a second file and a third file.
+            Since having css styles inside of html is considered bad practice create a css file with a class containing the styles for out div and change the html accordingly.<br/><br/>
+
+            Call the css file styles.css
         </p>
         <div class="source">
-            $ echo &quot;Our first line in the second file.&quot; > secondfile<br/>
-            $ echo &quot;Our first line in the third file.&quot; > thirdfile<br/>
-            $ git status<br/>
+<pre>
+    .red {
+        width:20%;
+        height:20%;
+        margin:auto;
+        background-color:red;
+    }
+</pre>
+        </div>
+        <p>
+            include the css by adding the following line inside of the head tag of firstpage.html
+        </p>
+        <div class="source">
+            &lt;link rel="stylesheet" type="text/css" href="styles.css"&gt;   
+        </div>
+        <p>
+            and change the style attribute to a class attribute referring to the class <i>red</i>
+        </p>
+        <div class="source">
+            <link rel="stylesheet" type="text/css" href="mystyle.css">
+            &lt;div style="width:20%;height:20%;margin:auto;background-color:red"&gt;&lt;/div&gt;    
+        </div>
+        <p>
+            to the class in your CSS file.
+        </p>
+        <div class="source">
+            &lt;div class="red"&gt;&lt;/div&gt;    
+        </div>
+        <p>
+            Add an empty javascript file called script.js. <br/></br/>
+
+            Running git status will tell you now, that there are two files new files (git calles them untracked) and one file that is modified. All three of them need to be added if they should be included in the next commit.
+        </p>
+        <div class="source">
             $ git add .<br/>          
             $ git status<br/>            
-            $ git commit //Enter a comment, &quot;Adding our second and third file.&quot;<br/>
+            $ git commit //Enter a comment, &quot;Moved CSS from the html to its own CSS file. Added a javascript file just in case.&quot;<br/>
             $ git status
         </div>
         <div class="branches">(1)-(2*) -- master**</div>
         <h3>Removing files in the repository</h3>
         <p>
-            Three files are too much? Right, we probably only need two. So let's just remove the third file again.
-            Remove the third file with:
+            But, do we really need the javascript file? Of course not, it is empty, so let's just take it away again.<br/><br/>
+
+            Remove script.js with:
         </p>
         <div class="source">
-            $ rm thirdfile
+            $ rm script.js
         </div>
         <p>
             Check the status with:
@@ -102,21 +158,22 @@
             $ git status
         </div>
         <p>
-            Like it happened when we created a file, the deletion is detected but not staged.<br>
+            The rm command efficiently removed script.js from the file system, but git is still tracking it.<br/><br/>
             Tell git that you want to remove the file from the repository and commit your changes.
         </p>
         <div class = "source">
-            $ git rm thirdfile<br/>
+            $ git rm script.js<br/>
             $ git status<br/>
-            $ git commit //Enter a comment, "Removed the third file."
+            $ git commit //Enter a comment, "Removed the unused javascript file."
         </div>
         <div class="branches">(1)-(2)-(3*) -- master**</div>
-        <h3>Moving files in the repository</h3>
+        <h3>Moving/Renaming files in the repository</h3>
         <p>
-            Move the second file with
+            If you rename a file on the file level git understands this as two actions. First the creation of the new file with the new name and second the removal of the old file. <br/><br/>
+            Rename the CSS file with
         </p>
         <div class="source">
-            $ mv secondfile newfile
+            $ mv styles.css firstpage.css
         </div>
         <p>
             Check git status
@@ -125,34 +182,43 @@
             $ git status
         </div>
         <p>
-            Guess what? The movement was not staged. As always we do as git says.<br>
-            Add the new name of the file to the next commit, remove the old name and commit your changes. If you are tired of vi by now add your messages via the -m option of <i>git commit</i>.
+            Don't forget to change the css reference in your html file to point to firstpage.css!<br/><br/>
+            Git understands renaming as two actions, deletion of the file with the old name and creation of the file with the new name.<br>
+            Add the file with the new name to the next commit, remove the old file and commit your changes. If you are tired of vi by now add your messages via the -m option of <i>git commit</i>.
         </p>
         <div class = "source">
-            $ git add newfile<br/>
-            $ git rm secondfile<br/>
+            $ git add firstpage.css<br/>
+            $ git add firstpage.html<br/>
+            $ git rm styles.css<br/>
             $ git status<br/>
-            $ git commit -m "Renamed the second file."
+            $ git commit -m "Renamed styles.css to firstpage.css."
         </div>
         <div class="branches">(1)-(2)-(3)-(4*) -- master**</div>
         
-        <h3>Reverting an unwanted change</h3>
+        <h3>Reverting an unwanted uncommitted change</h3>
         <p>
-            Add some text to the newfile and check the status.
-        </p>
-        <div class="source">
-            $ echo "A new line" >> newfile<br/>
-            $ git status
-        </div>
-        <p>
-            Git tells you that your file is modified and, as usual explains how you could add it to your commit. But this time we ignore it! Instead we want to have our changes reverted. The new text just doesn't really fit...<br/>
-            This we do with:
+            Sometimes you work on a change for a while only to realize that everything you did went in the wrong direction. If you haven't committed your changes yet git makes it easy for you to revert your changes to the time of your last commit.<br/><br/>
+
+            Change the color in your css class to blue and look at your status.<br/><br/>
+
+            Git tells you that your file is modified and, as usual explains how you could add it to your commit. But this time ignore it. Instead you want to have the changes reverted. <br/>
+            This you can do with:
         </p>
         <div class = "source">
-            $ git checkout newfile
+            $ git checkout firstpage.css
         </div>
         <p>
-            And everything is back to normal. Note, that checkout only works before a commit. Once you have committed all chances are gone. Or are they?
+            If your changes affect more than one file you can reset your whole workspace to the state of the last commit.<br/> <br/>
+            Add another div to your firstpage.html that referes to the class "blue". Create an according class in your CSS file.<br/><br/>
+            As usual look at the status and see that two files have been modified.<br/>
+            To revert your modifications run:
+        </p>
+        <div class = "source">
+            $ git reset --hard HEAD <br/>
+        </div>
+        <p>
+            Looking at the status shows you that you are back to the clean state of our last commit. <br /><br/>
+            Note that HEAD always refers to the last committed state. <br/><br/>
         </p>
     </body>
 </html>
